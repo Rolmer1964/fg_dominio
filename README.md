@@ -4,7 +4,8 @@ Vocabulário compartilhado da família FinGuard. **Zero dependências.**
 
 Existe para que `fg_triagem`, `fg_risco`, `fg_relatorios` e a UI concordem nos
 mesmos strings — sem drift de digitação entre o prompt do LLM e os mapas
-downstream.
+downstream — e nos mesmos **contratos de resultado**, de modo que uma folha
+consuma a saída de outra sem precisar importá-la (quem costura é o `fg_core`).
 
 ## Conteúdo
 
@@ -15,6 +16,8 @@ downstream.
 | `SLA_POR_URGENCIA` | mapa `{urgência: prazo}` — §4 da POL-SAC-001 |
 | `normalizar_urgencia(s)`, `normalizar_risco(s)` | texto livre → valor canônico (ou `None`) |
 | `mascarar_palavroes(texto)` | filtro local de profanidade (preserva "Banco Central", "golpe", etc.) |
+| `ResultadoTriagem` | DTO produzido por `fg_triagem`: `categoria, produto, sentimento, urgencia, resumo` |
+| `ResultadoRisco` | DTO produzido por `fg_risco`: `nivel, justificativa, acoes_recomendadas, trechos_rag_usados` |
 
 ## Uso
 
@@ -25,6 +28,15 @@ normalizar_urgencia("CRÍTICA")          # "Crítica"
 SLA_POR_URGENCIA["Alta"]                # "24 horas"
 "Cartão de Crédito" in PRODUTOS         # True
 mascarar_palavroes("que merda")         # "que ***"
+```
+
+Contratos de resultado (o passo seguinte recebe estes tipos, não o pacote que os produziu):
+
+```python
+from fg_dominio import ResultadoTriagem, ResultadoRisco
+
+t = ResultadoTriagem("Fraude/Segurança", "Cartão de Crédito", "Crítico", "Crítica", "resumo...")
+r = ResultadoRisco("Alto", "conforme §2.3 da POL-SAC-001", ["Bloquear cartão"], 4)
 ```
 
 ## Testes
