@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fg_dominio"
-version = "0.2.0"
-description = "fg_dominio — vocabulário compartilhado da família FinGuard (taxonomia, mapas de política, normalizadores, contratos de resultado)"
+version = "0.3.0"
+description = "fg_dominio — vocabulário compartilhado da família FinGuard (taxonomia, mapas de política, normalizadores, fuso BRT, contratos de resultado)"
 requires-python = ">=3.12"
 dependencies = []
 
